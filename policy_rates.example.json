@@ -1,0 +1,66 @@
+{
+  "_README": [
+    "ILLUSTRATIVE VALUES ONLY. These are NOT real central bank rates and must",
+    "not be used to produce any result you intend to believe.",
+    "",
+    "They exist to show the file's shape and to let the carry strategy be",
+    "exercised end to end. The numbers are invented; the dates are spaced to",
+    "look like a plausible decision calendar and are not real meeting dates.",
+    "",
+    "TO USE THIS FOR REAL:",
+    "  1. Copy this file to policy_rates.json (the engine warns if you load a",
+    "     file with 'example' in its name).",
+    "  2. Replace every entry with each central bank's published policy rate",
+    "     and its actual effective date. These are a handful of decisions per",
+    "     currency per year and are published by each bank.",
+    "  3. Fill 'inflation' from the headline CPI print current at that date.",
+    "     Leave it out and the engine falls back to nominal rates, which",
+    "     overstate the carry of high-inflation currencies.",
+    "",
+    "WHY DATES MATTER: the engine looks up the rate in force as of each bar.",
+    "A rate with no effective date cannot answer a dated query at all, and an",
+    "undated table makes every carry decision refuse rather than apply today's",
+    "rate to a bar from two years ago. That refusal is the point."
+  ],
+
+  "USD": [
+    {"effective": "2024-09-19", "rate": 5.00, "inflation": 2.4},
+    {"effective": "2024-11-08", "rate": 4.75, "inflation": 2.6},
+    {"effective": "2024-12-19", "rate": 4.50, "inflation": 2.7},
+    {"effective": "2025-06-19", "rate": 4.25, "inflation": 2.8},
+    {"effective": "2025-12-11", "rate": 4.00, "inflation": 2.6}
+  ],
+
+  "EUR": [
+    {"effective": "2024-09-18", "rate": 3.50, "inflation": 1.7},
+    {"effective": "2024-10-23", "rate": 3.25, "inflation": 2.0},
+    {"effective": "2024-12-18", "rate": 3.00, "inflation": 2.2},
+    {"effective": "2025-03-12", "rate": 2.65, "inflation": 2.3},
+    {"effective": "2025-06-11", "rate": 2.15, "inflation": 2.0}
+  ],
+
+  "GBP": [
+    {"effective": "2024-09-19", "rate": 5.00, "inflation": 2.2},
+    {"effective": "2024-11-07", "rate": 4.75, "inflation": 2.3},
+    {"effective": "2025-02-06", "rate": 4.50, "inflation": 3.0},
+    {"effective": "2025-08-07", "rate": 4.00, "inflation": 3.4}
+  ],
+
+  "JPY": [
+    {"effective": "2024-09-20", "rate": 0.25, "inflation": 2.5},
+    {"effective": "2025-01-24", "rate": 0.50, "inflation": 3.2},
+    {"effective": "2026-01-23", "rate": 0.75, "inflation": 2.8}
+  ],
+
+  "CHF": [
+    {"effective": "2024-09-26", "rate": 1.00, "inflation": 0.8},
+    {"effective": "2024-12-12", "rate": 0.50, "inflation": 0.6},
+    {"effective": "2025-06-19", "rate": 0.00, "inflation": 0.2}
+  ],
+
+  "AUD": [
+    {"effective": "2024-09-24", "rate": 4.35, "inflation": 2.8},
+    {"effective": "2025-02-18", "rate": 4.10, "inflation": 2.4},
+    {"effective": "2025-08-12", "rate": 3.60, "inflation": 3.0}
+  ]
+}

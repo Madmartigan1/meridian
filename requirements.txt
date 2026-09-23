@@ -1,0 +1,15 @@
+# Meridian's engine, CLI and engine tests require only the Python standard
+# library (3.10+). Nothing needs installing to run them.
+#
+# The desktop GUI needs Qt. Install it only if you want the window:
+#
+#   pip install PySide6
+#
+PySide6>=6.5 ; extra == "gui"
+#
+# Deliberately absent:
+#   pandas / numpy - the engine is streaming and O(1) per bar by design
+#   pytz / tzdata  - New York offsets are computed from the US DST rules
+#                    directly, because a stock Windows Python has no tz
+#                    database and a missing-timezone crash mid-run is not an
+#                    acceptable failure mode

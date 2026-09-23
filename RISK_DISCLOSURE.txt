@@ -1,0 +1,83 @@
+MERIDIAN - RISK DISCLOSURE
+==========================
+
+Read this before using Meridian to inform any decision involving real money.
+
+Meridian is software for simulating and inspecting foreign exchange trading
+logic. It is not financial advice, not a recommendation to trade, and not a
+prediction of any price or outcome.
+
+
+1. LEVERAGED FX TRADING LOSES MONEY FOR MOST RETAIL PARTICIPANTS
+----------------------------------------------------------------
+Brokers subject to EU and UK disclosure rules are required to publish the
+proportion of retail accounts that lose money trading CFDs and rolling spot FX.
+Published figures have consistently sat in the 70-80% range across firms and
+across years.
+
+This is a structural result, not a matter of effort or discipline:
+
+  - The spread is paid on entry and again on exit, on every trade.
+  - Financing (swap) is charged at every rollover, and tripled on Wednesdays.
+  - Slippage is worst precisely when it matters most - at data releases, and
+    on stop orders, which by definition fill in the worst liquidity available.
+  - Leverage multiplies every one of the above alongside the position.
+
+Short-horizon retail FX is approximately zero-sum before costs and reliably
+negative-sum after them.
+
+
+2. LEVERAGE CAN DESTROY AN ACCOUNT FASTER THAN AN EDGE CAN HELP IT
+-------------------------------------------------------------------
+Leverage does not improve expectancy. It scales outcomes and it raises the
+probability of ruin, which is a separate and far less forgiving quantity. At
+30:1, a 3% adverse move against a fully margined position is the entire
+account. Losses can exceed deposits with some brokers and account types.
+
+
+3. SIMULATED RESULTS ARE NOT EVIDENCE OF FUTURE PROFIT
+-------------------------------------------------------
+Every simulated figure Meridian produces depends on assumptions YOU set:
+spread, slippage, commission, financing and the data supplied. Change any of
+them and the result changes. Specifically:
+
+  - Synthetic sample data is a random walk. It has no fat tails, no session
+    volatility pattern, and no response to macro events. A result on it says
+    the engine executes, and nothing whatsoever about a strategy.
+  - Historical data contains one realised path out of many that were possible.
+  - Parameters tuned against a history will usually look excellent on that
+    history and behave like noise outside it.
+
+
+4. THE POLICY RATE AND CALENDAR DATA ARE PLACEHOLDERS
+-------------------------------------------------------
+The interest rates, inflation figures and swap values shipped in this
+repository are placeholders in the correct shape, NOT live market data. A stale
+rate table produces a carry bias that is confidently pointed the wrong way.
+Wire them to a source you trust before allowing them to influence anything.
+
+
+5. THERE IS NO LIVE TRADING PATH, BY DESIGN
+---------------------------------------------
+Meridian contains no broker integration and no code that places an order.
+engine/feed.py ships a documented stub interface and nothing more. Connecting
+a broker is a decision you make deliberately, by writing and reviewing an
+adapter yourself, and you take full responsibility for anything it does.
+
+
+6. NO WARRANTY
+---------------
+This software is provided as-is, without warranty of any kind, express or
+implied. The authors and contributors accept no liability for any loss arising
+from its use, including losses caused by defects in the software, incorrect
+assumptions, bad data, or a strategy behaving differently from expectation.
+
+
+7. YOUR RESPONSIBILITY
+-----------------------
+You are responsible for your configuration, your data, your risk limits, your
+regulatory position, your tax position, and every decision you take. If you do
+not fully understand a mechanism described in docs/FX_PRIMER.md, you are not
+in a position to risk money on it.
+
+If you cannot afford to lose the money entirely, do not risk it.

@@ -1,0 +1,74 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  engine:
+    # The engine, CLI and their tests are standard library only. Running them
+    # without PySide6 installed is not an oversight -- it is the check that
+    # keeps `engine/` free of a Qt import.
+    name: engine (no Qt)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run engine tests
+        shell: bash
+        run: |
+          failed=0
+          for f in tests/test_*.py; do
+            case "$f" in *test_gui_controller.py) continue ;; esac
+            echo "--- $f"
+            python "$f" || failed=1
+          done
+          exit $failed
+
+      - name: Engine must import without Qt
+        shell: bash
+        run: |
+          python - <<'EOF'
+          import sys
+          import engine.engine, engine.main   # noqa: F401
+          assert "PySide6" not in sys.modules, "engine/ pulled in Qt"
+          print("engine imports clean, no Qt")
+          EOF
+
+      - name: End-to-end run on generated data
+        shell: bash
+        run: |
+          python meridian.py --generate-data --bars 800
+          python meridian.py --reset-state -q
+
+  gui:
+    name: gui (PySide6)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Qt runtime libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libdbus-1-3
+
+      - name: Install PySide6
+        run: pip install PySide6
+
+      - name: Run GUI tests
+        # The test file sets QT_QPA_PLATFORM=offscreen and points
+        # MERIDIAN_STATE_DIR at a temp directory itself.
+        run: python tests/test_gui_controller.py
