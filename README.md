@@ -87,6 +87,37 @@ configuration reference.
 
 ---
 
+## For the engineering reader
+
+Most of the discipline in this codebase isn't really about finance. It is
+input validation and trust boundaries, wearing a trading costume:
+
+- **Refuse rather than guess.** Missing a conversion rate, a stop distance, or
+  a tradable size produces a refusal carrying a reason — never a plausible
+  default. A guessed pip value sizes a real position against unknown risk,
+  which is strictly worse than not trading. Same instinct as never coercing
+  malformed input into something that parses.
+- **A temporal trust boundary.** Carry may only use a policy rate that
+  provably existed at the bar being processed. `PolicyRateSeries.asof()`
+  returns the value in force or `None`, and `None` propagates to a refusal.
+  Applying today's rate to an older bar is lookahead bias — a confident result
+  built on data from outside its own trust boundary.
+- **Fail closed, by construction.** The shipped placeholder rates are
+  *undated*, and an undated rate can never satisfy a dated query. Forgetting to
+  replace them makes the engine refuse, not quietly fabricate. The safe state
+  is the default state, not a thing you have to remember.
+- **Never take the flattering assumption.** Where an outcome is ambiguous, the
+  pessimistic reading wins: a bar touching both stop and target settles as the
+  stop, slippage is always adverse, gapped stops fill at the open.
+- **Auditability.** Every refusal logs a stable single-token code, so a run
+  that took no trades explains itself instead of leaving you guessing.
+
+The failure mode this guards against is not a crash. It is software that keeps
+running and produces a confident, wrong number — which is the same reason
+silent input coercion is a vulnerability rather than a convenience.
+
+---
+
 ## Quick start
 
 No credentials and no network. The engine, CLI and engine tests need only the
